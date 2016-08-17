@@ -2,15 +2,18 @@
 
 SERVER_IP=192.168.2.4
 
+#check for root user
 if [[ $EUID -ne 0 ]] ; then
 
    echo "Script must be excuted  as root user" 2>&1
    exit 1
 
 else
-
+#check availability of the svn server
    ping -c1 $SERVER_IP > /dev/null
    if [ $? -eq 0 ] ; then
+
+#Backup storage directory settings
 
 BACKUP_BASE_LOCATION="/var/repos_backups/svn_repos_backups"
 
@@ -21,6 +24,7 @@ SCRIPT_EXECUTION_LOGS="$BACKUP_LOG_LOCATION/svn_backup_status.log"
 SVN_DUMP_NAME="svn_repo_dump_$(date +"%Y-%m-%d-%T").dump"
 
 #SVN_DUMP_ARCHIVE_NAME="svn_repo_dump_$(date +"%Y-%m-%d-%T").dump.gz"
+#Backup retention configuration 
 
 DAILY_RETENSIONS=2
 
@@ -31,12 +35,14 @@ DAILY_DEST="$BACKUP_BASE_LOCATION/Daily"
 WEEK_DEST="$BACKUP_BASE_LOCATION/Weekly"
 
 CURRENT_DAY=$(date +%A)
-#gitlab-rake gitlab:backup:create
 
+#Creating necessary directories
 mkdir -p $BACKUP_BASE_LOCATION  
 mkdir -p $DAILY_DEST 
 mkdir -p $WEEK_DEST 
 mkdir -p $BACKUP_LOG_LOCATION
+
+#Backup rotation logic based on timestamp
 
 function rotate_backups_using_timestamp {
 
@@ -55,6 +61,7 @@ fi
 
 }
 
+#Backup rotation logic based on version
 
 function rotate_backups {
 echo 'In Backup Rotation Logic' >>  $SCRIPT_EXECUTION_LOGS
@@ -89,7 +96,7 @@ fi
 fi
 #return 1
 }
-
+#svn dump logic
 echo "-----------------------------------------------status on $(date)------------------------------------" >> $SCRIPT_EXECUTION_LOGS
 if [ $CURRENT_DAY != "Friday" ] ; then
 
