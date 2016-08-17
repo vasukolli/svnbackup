@@ -9,6 +9,6 @@ b) Flexible retention policies(weekly and daily)
 
 c) Flexible rotation logic based on timestamp or dump version
 
-
+d) Compressed backups
 
 
