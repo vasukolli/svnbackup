@@ -23,7 +23,6 @@ SCRIPT_EXECUTION_LOGS="$BACKUP_LOG_LOCATION/svn_backup_status.log"
 
 SVN_DUMP_NAME="svn_repo_dump_$(date +"%Y-%m-%d-%T").dump"
 
-#SVN_DUMP_ARCHIVE_NAME="svn_repo_dump_$(date +"%Y-%m-%d-%T").dump.gz"
 #Backup retention configuration 
 
 DAILY_RETENSIONS=2
