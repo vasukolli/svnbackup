@@ -1,0 +1,50 @@
+#!/bin/bash
+
+RETENSIONS=15
+
+DIRECTORY=$1
+
+
+#delete files logic
+function delete_files {
+
+if [ -d "$DIRECTORY" ] ; then
+
+#searching for list of files to be deleted
+files_list=(`find $DIRECTORY -maxdepth 1 -mtime +$RETENSIONS -type f`)
+
+echo "Files to be deleted:"
+
+printf "%s\n" "${files_list[@]}"
+
+#confirm before
+read -p "Continue (y/n)?" choice
+
+case "$choice" in
+  y|Y )
+       echo "yes"
+       for f in "${files_list[@]}"
+       do
+         rm -rv $f
+       done
+       ;;
+  n|N )
+       echo "no";;
+  * )
+     echo "invalid";;
+esac
+
+#find $1 -maxdepth 1 -mtime +$RETENSIONS -type f -exec rm -rv {} \;
+
+#echo "Files deleted Successfully"
+
+else
+
+echo "Directory doesnot exists"
+
+
+fi
+
+}
+
+delete_files $DIRECTORY
